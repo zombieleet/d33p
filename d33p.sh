@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 #  Author [73mp74710n]
-#  Email [<73mp74710n@sagint.com>]
-#  Team: [Nigeria Cyber Army ]
+#  Email [<zombieleetnca@gmail.com>]
+#  
 # 
 #  
 #[LICENSE]
