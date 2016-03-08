@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 #  Author [73mp74710n]
-#  Email [<zombieleetnca@gmail.com>]
-#  
+#  Email [<73mp74710n@sagint.com>]
+#  Team: [Nigeria Cyber Army ]
 # 
 #  
 #[LICENSE]
@@ -55,7 +55,7 @@ bing(){
     
     exec 5>outfile.log
     c
-    echo "\n\n${open}${bold}${green}\t\t\tDON'T FORGET TO CHECK THE LOGS${close}"
+    printf "\n\n${open}${bold}${green}\t\t\t%s${close}\n" "DON'T FORGET TO CHECK THE LOGS"
 
     local burl="$*"
     local ip;
@@ -69,15 +69,18 @@ bing(){
     for getBing in $(seq 1 ${limit} )
     do
 	
-	if  { curl -s ${bString}'&'first=${getBing} | grep "No results found" >/dev/null 2>&1; }
+	if  { curl -s "${bString}"'&'first="${getBing}" | grep "No results found" >/dev/null 2>&1; }
 	then
 
-	    echo "${open}${bold}${red}No result was found${close}" && exit $RANDOM
+	    printf "${open}${bold}${red}%s${close}" "No result was found" && \
+		exit $RANDOM
 	    
 	fi
 
-	for _bing in $( curl -s ${bString}'&'first=${getBing} | sed 's/<cite>/\n<cite>/g;s/<\/cite>/<\/cite>\n/g;s/<strong>//g;s/<\/strong>//g'\
-			      | grep --color "<cite>" | sed 's/<cite>//g;s/<\/cite>//g' )
+	for _bing in \
+	    $( curl -s "${bString}"'&'first="${getBing}" | \
+		     sed 's/<cite>/\n<cite>/g;s/<\/cite>/<\/cite>\n/g;s/<strong>//g;s/<\/strong>//g' | \
+		     grep --color "<cite>" | sed 's/<cite>//g;s/<\/cite>//g' )
 	do
 
 	    #_b=$( echo $_bing | sed 's,https://,,' )
@@ -88,10 +91,10 @@ bing(){
 	    (( $? != 0 )) && continue
 	    
 		
-	    echo "${open}${bold}${green}\t\tWebsite:- ${close}${open}${bold}${red}$_bing${close}" | tee -a /proc/self/fd/5
+	    printf "${open}${bold}${green}\t\t%s${close}${open}${bold}${red}%s${close}\n" "Website:- " "$_bing" | \
+		tee -a /proc/self/fd/5
 	    
-	 
-	    if $( : $_cut )
+	    if { : "$_cut" ;}
 	    then
 		_bing=${_cut}
   	 
@@ -101,10 +104,10 @@ bing(){
 	    
 	    
 	    ip=( $(nslookup  "${_bing}" | grep "Address: " | sed 's/Address: //g;s/ /, /g' ) )
-	    #ip=$( echo "${ip[@]}" | sed 's/ /, /g' )
-	    ip="${ip[@]// /,}"
 	    
-	    echo "${open}${bold}${green}\t\tIpAddress: ${close}${open}${bold}${red}${ip}${close}\n\n"  | tee -a /proc/self/fd/5
+	    printf "${open}${bold}${green}\t\t%s${close}${open}${bold}${red}%s${close}\n\n" \
+		   "IpAddress: " "$( echo "${ip[*]}" | sed 's/ /\n\t\t\t   /g')"  \
+		| tee -a /proc/self/fd/5
 	    sleep 2
 
 	    
@@ -121,7 +124,7 @@ google(){
     exec 5>outfile.log
     c
 
-    echo "\n\n${open}${bold}${green}\t\t\tDON'T FORGET TO CHECK THE LOGS${close}\n\n"
+    printf "\n\n${open}${bold}${green}\t\t\t%s${close}\n\n" "DON'T FORGET TO CHECK THE LOGS"
     
     local gurl="$*"
     local ip;
@@ -133,7 +136,7 @@ google(){
 
     for getGoogle in $(seq 1 ${limit})
     do
-	for _google in $( curl -s $gString'&'start=${getGoogle} \
+	for _google in $( curl -s "$gString"'&'start="${getGoogle}" \
 			       --user-agent \
 			       "Surf/0.4.1 (X11; U; Unix; en-US) AppleWebKit/531.2+ Compatible (Safari; MSIE 9.0)" | \
 				sed 's/<cite>/\n<cite>/g;s/<b>//g;s/<\/b>//g;s/<\/cite>/\n<\/cite>/g' | grep "<cite>" | sed 's/<cite>//g' )
@@ -146,9 +149,10 @@ google(){
 	    { >/dev/tcp/"${_cut}"/80 ;}>/dev/null 2>&1
 	    (( $? != 0 )) && continue
 
-	    echo "${open}${bold}${green}\t\tWebsite:- ${close}${open}${bold}${red}$_google${close}" | tee -a /proc/self/fd/5
+	    printf "${open}${bold}${green}\t\t%s${close}${open}${bold}${red}%s${close}\n" "Website:- " "$_google" \
+		| tee -a /proc/self/fd/5
 
-	    if $( : $_cut )
+	    if { : "$_cut";}
 	    then
 		_google=${_cut}
   		
@@ -158,10 +162,11 @@ google(){
 	    
 
 	    
-	    ip=( $(nslookup  "${_google}" | grep "Address: " | sed 's/Address: //g;s/ /, /g' ) )
-	    ip="${ip[@]// /,}"
+	    ip=( $(nslookup  "${_google}" | grep "Address: " | sed 's/Address: //g;s/ /, /g' ) )	    
+	    printf "${open}${bold}${green}\t\t%s${close}${open}${bold}${red}%s${close}\n\n" \
+		   "IpAddress: " "$( echo "${ip[*]}" | sed 's/ /\n\t\t\t   /g')" \
+		| tee -a /proc/self/fd/5
 	    
-	    echo "${open}${bold}${green}\t\tIpAddress: ${close}${open}${bold}${red}${ip}${close}\n\n"  | tee -a /proc/self/fd/5
 	    sleep 2
 	    
 	done
@@ -173,28 +178,26 @@ google(){
 OPTERR=0
 (( ${#@} < 1 )) && usage && exit 1;
 [[ ${1} == @(-g|-b|-h|-l) ]] ||  { usage && exit 1 ;}
-while getopts "g:b:l:a:h" opt
+while getopts "g:b:a:l:h" opt
 do
     
     case $opt in
 	g)
 	    limit=${limit}
-	    echo $OPTARG
-	    echo $limit
-	    google ${OPTARG}
+	    google "${OPTARG}"
 	    ;;
 	
 	b)
 	    limit=${limit}
 	    #echo $limit
-	    bing ${OPTARG}
+	    bing "${OPTARG}"
 	    ;;
 	
 	a) limit=${limit}
 	   
-	   google ${OPTARG}
+	   google "${OPTARG}"
 	   echo ""
-	   bing ${OPTARG}
+	   bing "${OPTARG}"
 	   ;;
 	l) limit=${OPTARG}
 	   ;;
