@@ -173,7 +173,7 @@ google(){
 OPTERR=0
 (( ${#@} < 1 )) && usage && exit 1;
 [[ ${1} == @(-g|-b|-h|-l) ]] ||  { usage && exit 1 ;}
-while getopts "g:b:l:h" opt
+while getopts "g:b:l:a:h" opt
 do
     
     case $opt in
