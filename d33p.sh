@@ -108,9 +108,6 @@ bing(){
 	    printf "${open}${bold}${green}\t\t%s${close}${open}${bold}${red}%s${close}\n\n" \
 		   "IpAddress: " "$( echo "${ip[*]}" | sed 's/ /\n\t\t\t   /g')"  \
 		| tee -a /proc/self/fd/5
-	    sleep 2
-
-	    
 	    
 	done
 	
@@ -166,9 +163,6 @@ google(){
 	    printf "${open}${bold}${green}\t\t%s${close}${open}${bold}${red}%s${close}\n\n" \
 		   "IpAddress: " "$( echo "${ip[*]}" | sed 's/ /\n\t\t\t   /g')" \
 		| tee -a /proc/self/fd/5
-	    
-	    sleep 2
-	    
 	done
 
 	
